@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro; 
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float shrinkHeight = 1f;
     public float crawlSpeed = 3f;
     public float dashTime = 0.3f;
+    public TextMeshProUGUI scoreText; 
 
     private CharacterController playerBody;
     private Vector3 motionVector;
@@ -25,12 +27,15 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private float lastDashPressTime = 0f;
     private float dashCooldown = 0.5f;
+    private int score = 0; 
 
     void Awake()
     {
         playerBody = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        UpdateScoreUI();
     }
 
     void Update()
@@ -116,6 +121,20 @@ public class PlayerController : MonoBehaviour
             playerBody.height = fullHeight;
             walkSpeed = 6f;
             dashSpeed = 18f;
+        }
+    }
+
+    public void AddScore(int amount)
+    {
+        score += amount;
+        UpdateScoreUI();
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
         }
     }
 }

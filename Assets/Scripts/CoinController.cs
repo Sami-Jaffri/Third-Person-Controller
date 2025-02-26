@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public int coinValue = 1; 
 
-    // Update is called once per frame
     void Update()
     {
-        transform.Rotate(1,0,0); 
+        transform.Rotate(1, 0, 0); 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) 
+        {
+            PlayerController player = other.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.AddScore(coinValue); 
+                Destroy(gameObject); 
+            }
+        }
     }
 }
