@@ -64,10 +64,11 @@ public class PlayerController : MonoBehaviour
 
         float movementSpeed = isDashing ? dashSpeed : walkSpeed;
         Vector3 movement = transform.right * moveSide + transform.forward * moveForward;
-        playerBody.Move(movement * movementSpeed * Time.deltaTime);
 
         if (playerBody.isGrounded)
         {
+            motionVector.y = -0.5f;
+
             if (Input.GetButtonDown("Jump"))
             {
                 motionVector.y = leapForce;
@@ -81,11 +82,12 @@ public class PlayerController : MonoBehaviour
                 motionVector.y = doubleJumpForce;
                 canDoubleJump = false;
             }
-            motionVector.y -= fallGravity * Time.deltaTime;
+            motionVector.y -= fallGravity * Time.deltaTime; 
         }
 
-        playerBody.Move(motionVector * Time.deltaTime);
+        playerBody.Move((movement * movementSpeed + motionVector) * Time.deltaTime);
     }
+
 
     private IEnumerator Dash()
     {
